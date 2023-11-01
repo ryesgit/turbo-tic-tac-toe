@@ -6,6 +6,12 @@
 #define s scanf
 #define g gotoxy
 
+typedef struct
+{
+    int x;
+    int y;
+} Coords;
+
 void drawOnScreen(x, y)
 {
     g(x, y);
@@ -35,20 +41,22 @@ void drawHorizontalLine(x, y, length)
 Returns center of cell,
 location to which character can be placed
 */
-int *drawCell(x, y, length)
+Coords drawCell(x, y, length)
 {
 
-    static int centerCoords[2];
-
+    int centerX, centerY;
+    Coords cellCenterCoords;
     drawHorizontalLine(x, y, length);
     drawVerticalLine(x + length, y, length);
     drawVerticalLine(x, y, length);
     drawHorizontalLine(x, y + (length / 2), length + 1);
 
-    centerCoords[0] = abs((x - length) / 2);
-    centerCoords[1] = abs((y - length) / 2);
+    centerX = abs((x + (length / 2)));
+    centerY = abs(y + (length * .33));
 
-    return centerCoords;
+    cellCenterCoords.x = centerX;
+    cellCenterCoords.y = centerY;
+    return cellCenterCoords;
 }
 
 /*
@@ -56,41 +64,34 @@ Returns all center coordinates of each cell
 */
 int *drawGameboard(x, y, length)
 {
-    static int centerCoordinates[3][3];
-    int i, j, k;
+    static Coords collectiveCenterCoordinates[3][3];
+    int i;
 
     for (i = 0; i < 3; i++)
     {
-        int *centerCoords;
+        Coords centerCoords;
         centerCoords = drawCell(x + (length * i), y, length);
-        centerCoordinates[0][i] = centerCoords;
-    }
+        collectiveCenterCoordinates[0][i] = centerCoords;
+        drawOnScreen(centerCoords.x, centerCoords.y);
+    };
 
     for (i = 0; i < 3; i++)
     {
-        int *centerCoords;
-        drawCell(x + (length * i), y + ((length / 2)), length);
-        centerCoordinates[1][i] = centerCoords;
-    }
+        Coords centerCoords;
+        centerCoords = drawCell(x + (length * i), (y + (length / 2)), length);
+        collectiveCenterCoordinates[0][i] = centerCoords;
+        drawOnScreen(centerCoords.x, centerCoords.y);
+    };
 
     for (i = 0; i < 3; i++)
     {
-        int *centerCoords;
-        drawCell(x + (length * i), y + ((length / 2) * 2), length);
-        centerCoordinates[1][i] = centerCoords;
-    }
+        Coords centerCoords;
+        centerCoords = drawCell(x + (length * i), y + (length), length);
+        collectiveCenterCoordinates[0][i] = centerCoords;
+        drawOnScreen(centerCoords.x, centerCoords.y);
+    };
 
-    for (i = 0; i < 3; i++)
-    {
-        for (j = 0; j < 3; j++)
-        {
-            int *cellCenterCoords;
-            cellCenterCoords = centerCoordinates[i][j];
-            p("Expected to be 17: %i", cellCenterCoords[0]);
-        }
-    }
-
-    return centerCoordinates;
+    return *collectiveCenterCoordinates;
 
     // drawCell(x, y, length);
     // drawCell(x + length, y, length);
@@ -99,19 +100,18 @@ int *drawGameboard(x, y, length)
 int main()
 {
     int i;
-    int *center;
+    // int ***collectiveCenterCoordinates;
     char gameboard[3][3] = {
         {'n', 'n', 'n'},
         {'n', 'n', 'n'},
         {'n', 'n', 'n'}};
 
+    int *collectiveCenterCoordinates;
     clrscr();
-
-    // centerCoords = drawGameboard(25, 5, 10);
-    center = drawCell(10, 10, 5);
-
-    g(40, 10);
-    p("Expected to be 1: %i", center[0]);
+    // collectiveCenterCoordinates = drawCell(10, 10, 10);
+    collectiveCenterCoordinates = drawGameboard(25, 5, 10);
 
     getch();
+
+    return 0;
 }
