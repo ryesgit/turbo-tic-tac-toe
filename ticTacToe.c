@@ -116,10 +116,25 @@ int hasVerticalWinner(char gameboard[3][3])
     return hasWinner;
 }
 
+int hasDiagonalWinner(char gameboard[3][3])
+{
+
+    int hasWinner = 0;
+
+    if (gameboard[0][0] == gameboard[1][1] && gameboard[1][1] == gameboard[2][2] ||
+        gameboard[0][2] == gameboard[1][1] && gameboard[1][1] == gameboard[2][0])
+    {
+        hasWinner = 1;
+        return hasWinner;
+    }
+
+    return hasWinner;
+}
+
 int hasWinner(char gameboard[3][3])
 {
 
-    if (hasHorizontalWinner(gameboard) || hasVerticalWinner(gameboard))
+    if (hasHorizontalWinner(gameboard) || hasVerticalWinner(gameboard) || hasDiagonalWinner(gameboard))
     {
         return 1;
     }
