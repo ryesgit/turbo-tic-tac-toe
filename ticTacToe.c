@@ -79,10 +79,6 @@ Coords drawCell(x, y, length)
 
 int hasHorizontalWinner(char gameboard[3][3])
 {
-    // char horizontalWinningPatterns[3][3] = {
-    //     {gameboard[0][0], gameboard[0][1], gameboard[0][2]},
-    //     {gameboard[1][0], gameboard[1][1], gameboard[1][2]},
-    //     {gameboard[2][0], gameboard[2][1], gameboard[2][2]}};
 
     int i;
 
@@ -100,10 +96,30 @@ int hasHorizontalWinner(char gameboard[3][3])
     return hasWinner;
 }
 
+int hasVerticalWinner(char gameboard[3][3])
+{
+
+    int i;
+    int j = 0;
+
+    int hasWinner = 0;
+
+    for (i = 0; i < 3; i++)
+    {
+        if (gameboard[j][i] == gameboard[j + 1][i] && gameboard[j + 1][i] == gameboard[j + 2][i])
+        {
+            hasWinner = 1;
+            return hasWinner;
+        }
+    }
+
+    return hasWinner;
+}
+
 int hasWinner(char gameboard[3][3])
 {
 
-    if (hasHorizontalWinner(gameboard))
+    if (hasHorizontalWinner(gameboard) || hasVerticalWinner(gameboard))
     {
         return 1;
     }
