@@ -191,12 +191,12 @@ int main()
         {'7', '8', '9'}};
 
     drawGameboard(25, 5, 10, gameboard);
+    playTurn(currentPlayer, gameboard);
+    drawGameboard(25, 5, 10, gameboard);
 
     // While there is no winner, just play game
     while (hasWinner(gameboard) != 1)
     {
-        playTurn(currentPlayer, gameboard);
-        drawGameboard(25, 5, 10, gameboard);
         if (currentPlayer.playerNumber == playerOne.playerNumber)
         {
             currentPlayer = playerTwo;
@@ -205,7 +205,14 @@ int main()
         {
             currentPlayer = playerOne;
         }
+        playTurn(currentPlayer, gameboard);
+        drawGameboard(25, 5, 10, gameboard);
     }
+
+    clrscr();
+
+    g(25, 25);
+    p("Congratulations, player number %i! You have won!", currentPlayer.playerNumber);
 
     getch();
 
