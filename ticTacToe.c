@@ -124,11 +124,6 @@ int hasWinner(char gameboard[3][3])
         return 1;
     }
 
-    // char verticalWinningPatterns[3][3] = {
-    //     {gameboard[0][0], gameboard[1][0], gameboard[2][0]},
-    //     {gameboard[0][1], gameboard[1][1], gameboard[2][1]},
-    //     {gameboard[0][2], gameboard[1][2], gameboard[2][2]}};
-
     // char diagonalWinningPatterns[2][3] = {
     //     {gameboard[0][0], gameboard[1][1], gameboard[2][2]},
     //     {gameboard[0][2], gameboard[1][1], gameboard[2][0]}};
