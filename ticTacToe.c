@@ -65,9 +65,6 @@ Coords drawCell(x, y, length)
     return cellCenterCoords;
 }
 
-/*
-Returns all center coordinates of each cell
-*/
 void drawGameboard(int x, int y, int length, char gameboard[3][3])
 {
     int i;
@@ -92,22 +89,19 @@ void drawGameboard(int x, int y, int length, char gameboard[3][3])
         centerCoords = drawCell(x + (length * i), y + (length), length);
         drawOnScreen(gameboard[2][i], centerCoords.x, centerCoords.y);
     };
-
-    // drawCell(x, y, length);
-    // drawCell(x + length, y, length);
 }
 
 int main()
 {
     int i, j;
-    // int ***collectiveCenterCoordinates;
+
     char gameboard[3][3] = {
         {'n', 'n', 'n'},
         {'n', 'n', 'n'},
         {'n', 'n', 'n'}};
 
     clrscr();
-    // collectiveCenterCoordinates = drawCell(10, 10, 10);
+
     drawGameboard(25, 5, 10, gameboard);
 
     getch();
