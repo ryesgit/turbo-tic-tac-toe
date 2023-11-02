@@ -12,6 +12,18 @@ typedef struct
     int y;
 } Coords;
 
+typedef struct
+{
+    char marker;
+    int playerNumber;
+} Player;
+
+void typeOnScreen(message, x, y)
+{
+    g(x, y);
+    p("%s", message);
+}
+
 void drawBlockOnScreen(x, y)
 {
     g(x, y);
@@ -65,9 +77,36 @@ Coords drawCell(x, y, length)
     return cellCenterCoords;
 }
 
+void playTurn(Player currentPlayer, char gameboard[3][3])
+{
+    int choice, row, column;
+    typeOnScreen("Please type in a choice: ", 25, 25);
+    p("");
+    s("%i", &choice);
+
+    if (choice <= 3)
+    {
+        row = 0;
+    }
+    else if (choice > 3 && choice <= 6)
+    {
+        row = 1;
+    }
+    else
+    {
+        row = 2;
+    }
+
+    column = (choice - 1) % 3;
+
+    gameboard[row][column] = currentPlayer.marker;
+}
+
 void drawGameboard(int x, int y, int length, char gameboard[3][3])
 {
     int i;
+
+    clrscr();
 
     for (i = 0; i < 3; i++)
     {
@@ -95,12 +134,24 @@ int main()
 {
     int i, j;
 
-    char gameboard[3][3] = {
-        {'n', 'n', 'n'},
-        {'n', 'n', 'n'},
-        {'n', 'n', 'n'}};
+    Player playerOne = {
+        'x',
+        1};
 
-    clrscr();
+    Player playerTwo = {
+        'o',
+        2};
+
+    Player currentPlayer = playerOne;
+
+    char gameboard[3][3] = {
+        {'1', '2', '3'},
+        {'4', '5', '6'},
+        {'7', '8', '9'}};
+
+    drawGameboard(25, 5, 10, gameboard);
+
+    playTurn(currentPlayer, gameboard);
 
     drawGameboard(25, 5, 10, gameboard);
 
