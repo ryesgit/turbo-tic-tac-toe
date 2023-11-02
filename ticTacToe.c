@@ -77,6 +77,47 @@ Coords drawCell(x, y, length)
     return cellCenterCoords;
 }
 
+int hasHorizontalWinner(char gameboard[3][3])
+{
+    // char horizontalWinningPatterns[3][3] = {
+    //     {gameboard[0][0], gameboard[0][1], gameboard[0][2]},
+    //     {gameboard[1][0], gameboard[1][1], gameboard[1][2]},
+    //     {gameboard[2][0], gameboard[2][1], gameboard[2][2]}};
+
+    int i;
+
+    int hasWinner = 0;
+
+    for (i = 0; i < 3; i++)
+    {
+        if (gameboard[i][0] == gameboard[i][1] && gameboard[i][1] == gameboard[i][2])
+        {
+            hasWinner = 1;
+            return hasWinner;
+        }
+    }
+
+    return hasWinner;
+}
+
+int hasWinner(char gameboard[3][3])
+{
+
+    if (hasHorizontalWinner(gameboard))
+    {
+        return 1;
+    }
+
+    // char verticalWinningPatterns[3][3] = {
+    //     {gameboard[0][0], gameboard[1][0], gameboard[2][0]},
+    //     {gameboard[0][1], gameboard[1][1], gameboard[2][1]},
+    //     {gameboard[0][2], gameboard[1][2], gameboard[2][2]}};
+
+    // char diagonalWinningPatterns[2][3] = {
+    //     {gameboard[0][0], gameboard[1][1], gameboard[2][2]},
+    //     {gameboard[0][2], gameboard[1][1], gameboard[2][0]}};
+}
+
 void playTurn(Player currentPlayer, char gameboard[3][3])
 {
     int choice, row, column;
@@ -151,9 +192,20 @@ int main()
 
     drawGameboard(25, 5, 10, gameboard);
 
-    playTurn(currentPlayer, gameboard);
-
-    drawGameboard(25, 5, 10, gameboard);
+    // While there is no winner, just play game
+    while (hasWinner(gameboard) != 1)
+    {
+        playTurn(currentPlayer, gameboard);
+        drawGameboard(25, 5, 10, gameboard);
+        if (currentPlayer.playerNumber == playerOne.playerNumber)
+        {
+            currentPlayer = playerTwo;
+        }
+        else
+        {
+            currentPlayer = playerOne;
+        }
+    }
 
     getch();
 
