@@ -12,10 +12,16 @@ typedef struct
     int y;
 } Coords;
 
-void drawOnScreen(x, y)
+void drawBlockOnScreen(x, y)
 {
     g(x, y);
     p("%c", 219);
+}
+
+void drawOnScreen(character, x, y)
+{
+    g(x, y);
+    p("%c", character);
 }
 
 void drawVerticalLine(x, y, length)
@@ -23,7 +29,7 @@ void drawVerticalLine(x, y, length)
     int i;
     for (i = 0; i < (length - (length / 2)); i++)
     {
-        drawOnScreen(x, y + i);
+        drawBlockOnScreen(x, y + i);
     }
 }
 
@@ -33,7 +39,7 @@ void drawHorizontalLine(x, y, length)
     int i;
     for (i = 0; i < length; i++)
     {
-        drawOnScreen(x + i, y);
+        drawBlockOnScreen(x + i, y);
     }
 }
 
@@ -62,36 +68,30 @@ Coords drawCell(x, y, length)
 /*
 Returns all center coordinates of each cell
 */
-int *drawGameboard(x, y, length)
+void drawGameboard(int x, int y, int length, char gameboard[3][3])
 {
-    static Coords collectiveCenterCoordinates[3][3];
     int i;
 
     for (i = 0; i < 3; i++)
     {
         Coords centerCoords;
         centerCoords = drawCell(x + (length * i), y, length);
-        collectiveCenterCoordinates[0][i] = centerCoords;
-        drawOnScreen(centerCoords.x, centerCoords.y);
+        drawOnScreen(gameboard[0][i], centerCoords.x, centerCoords.y);
     };
 
     for (i = 0; i < 3; i++)
     {
         Coords centerCoords;
         centerCoords = drawCell(x + (length * i), (y + (length / 2)), length);
-        collectiveCenterCoordinates[0][i] = centerCoords;
-        drawOnScreen(centerCoords.x, centerCoords.y);
+        drawOnScreen(gameboard[1][i], centerCoords.x, centerCoords.y);
     };
 
     for (i = 0; i < 3; i++)
     {
         Coords centerCoords;
         centerCoords = drawCell(x + (length * i), y + (length), length);
-        collectiveCenterCoordinates[0][i] = centerCoords;
-        drawOnScreen(centerCoords.x, centerCoords.y);
+        drawOnScreen(gameboard[2][i], centerCoords.x, centerCoords.y);
     };
-
-    return *collectiveCenterCoordinates;
 
     // drawCell(x, y, length);
     // drawCell(x + length, y, length);
@@ -99,17 +99,16 @@ int *drawGameboard(x, y, length)
 
 int main()
 {
-    int i;
+    int i, j;
     // int ***collectiveCenterCoordinates;
     char gameboard[3][3] = {
         {'n', 'n', 'n'},
         {'n', 'n', 'n'},
         {'n', 'n', 'n'}};
 
-    int *collectiveCenterCoordinates;
     clrscr();
     // collectiveCenterCoordinates = drawCell(10, 10, 10);
-    collectiveCenterCoordinates = drawGameboard(25, 5, 10);
+    drawGameboard(25, 5, 10, gameboard);
 
     getch();
 
