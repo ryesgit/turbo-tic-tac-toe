@@ -142,6 +142,7 @@ int hasWinner(char gameboard[3][3])
     // char diagonalWinningPatterns[2][3] = {
     //     {gameboard[0][0], gameboard[1][1], gameboard[2][2]},
     //     {gameboard[0][2], gameboard[1][1], gameboard[2][0]}};
+    return 0;
 }
 
 void playTurn(Player currentPlayer, char gameboard[3][3])
@@ -166,7 +167,17 @@ void playTurn(Player currentPlayer, char gameboard[3][3])
 
     column = (choice - 1) % 3;
 
-    gameboard[row][column] = currentPlayer.marker;
+    if (gameboard[row][column] == 'x' || gameboard[row][column] == 'o')
+    {
+        g(25, 25);
+        p("Illegal move, try again");
+        delay(1000);
+    }
+    else
+    {
+        p("%c", gameboard[row][column]);
+        gameboard[row][column] = currentPlayer.marker;
+    }
 }
 
 void drawGameboard(int x, int y, int length, char gameboard[3][3])
@@ -237,7 +248,7 @@ int main()
 
     clrscr();
 
-    g(25, 25);
+    g(17, 13);
     p("Congratulations, player number %i! You have won!", currentPlayer.playerNumber);
 
     getch();
