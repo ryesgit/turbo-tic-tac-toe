@@ -145,38 +145,77 @@ int hasWinner(char gameboard[3][3])
     return 0;
 }
 
+int hasDraw(char gameboard[3][3])
+{
+    int i, j;
+
+    int filledCells = 0;
+
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            if (gameboard[i][j] == 'x' || gameboard[i][j] == 'o')
+            {
+                filledCells++;
+            }
+        }
+    }
+    if (filledCells >= 9 && hasWinner(gameboard) != 1)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 void playTurn(Player currentPlayer, char gameboard[3][3])
 {
-    int choice, row, column;
-    typeOnScreen("Please type in a choice: ", 25, 25);
-    p("");
-    s("%i", &choice);
+    int illegalMove;
+    illegalMove = 1;
+    while (illegalMove)
+    {
+        int choice, row, column;
+        typeOnScreen("Please type in a choice: ", 25, 25);
 
-    if (choice <= 3)
-    {
-        row = 0;
-    }
-    else if (choice > 3 && choice <= 6)
-    {
-        row = 1;
-    }
-    else
-    {
-        row = 2;
-    }
+        p("");
+        s("%i", &choice);
 
-    column = (choice - 1) % 3;
+        if (!isdigit(choice))
+        {
+            clrscr();
+            p("Please enter a number only");
+            delay(5000);
+        }
 
-    if (gameboard[row][column] == 'x' || gameboard[row][column] == 'o')
-    {
-        g(25, 25);
-        p("Illegal move, try again");
-        delay(1000);
-    }
-    else
-    {
-        p("%c", gameboard[row][column]);
-        gameboard[row][column] = currentPlayer.marker;
+        if (choice <= 3)
+        {
+            row = 0;
+        }
+        else if (choice > 3 && choice <= 6)
+        {
+            row = 1;
+        }
+        else
+        {
+            row = 2;
+        }
+
+        column = (choice - 1) % 3;
+
+        if (gameboard[row][column] == 'x' || gameboard[row][column] == 'o')
+        {
+            g(25, 25);
+            p("Illegal move, try again");
+            delay(1000);
+            continue;
+        }
+        else
+        {
+            p("%c", gameboard[row][column]);
+            gameboard[row][column] = currentPlayer.marker;
+            illegalMove = 0;
+        }
     }
 }
 
@@ -208,7 +247,7 @@ void drawGameboard(int x, int y, int length, char gameboard[3][3])
     };
 }
 
-int main()
+void ticTacToe()
 {
     int i, j;
 
@@ -231,8 +270,8 @@ int main()
     playTurn(currentPlayer, gameboard);
     drawGameboard(25, 5, 10, gameboard);
 
-    // While there is no winner, just play game
-    while (hasWinner(gameboard) != 1)
+    // While there is no winner and there is no draw, just play game
+    while (hasWinner(gameboard) != 1 && hasDraw(gameboard) != 1)
     {
         if (currentPlayer.playerNumber == playerOne.playerNumber)
         {
@@ -246,12 +285,18 @@ int main()
         drawGameboard(25, 5, 10, gameboard);
     }
 
-    clrscr();
-
     g(17, 13);
-    p("Congratulations, player number %i! You have won!", currentPlayer.playerNumber);
 
-    getch();
+    if (hasWinner(gameboard) == 1)
+    {
+        p("Congratulations, player number %i! You have won!", currentPlayer.playerNumber);
+    }
 
-    return 0;
+    if (hasDraw(gameboard) == 1)
+    {
+        p("It's a draw!");
+    }
+    g(25, 10);
+
+    promptBeforeExit();
 }
